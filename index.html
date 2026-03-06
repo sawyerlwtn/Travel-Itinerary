@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Itinerary Planner — Explore the World</title>
+    <meta name="description" content="Plan your travel itinerary on an interactive 3D globe. Fly between cities and discover food, landmarks, parks, and activities at each destination.">
+
+    <!-- Mapbox GL JS -->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.css' rel='stylesheet' />
+
+    <!-- Mapbox Geocoder (via jsDelivr CDN) -->
+    <script src='https://cdn.jsdelivr.net/npm/@mapbox/mapbox-gl-geocoder@5.1.2/dist/mapbox-gl-geocoder.min.js'></script>
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/@mapbox/mapbox-gl-geocoder@5.1.2/dist/mapbox-gl-geocoder.css' type='text/css'>
+
+    <!-- Custom Styles -->
+    <link rel='stylesheet' href='css/style.css'>
+</head>
+<body>
+
+    <!-- Map -->
+    <div id='map'></div>
+
+    <!-- Sidebar -->
+    <aside id='sidebar' class='sidebar'>
+        <button id='sidebar-toggle' class='sidebar-toggle' aria-label='Toggle sidebar'>▶</button>
+
+        <!-- Header -->
+        <div class='sidebar-header'>
+            <h1>✈ Global Itinerary</h1>
+            <p>Search cities, plan your route, explore the world.</p>
+        </div>
+
+        <!-- Search -->
+        <div class='geocoder-container'>
+            <div id='geocoder'></div>
+        </div>
+
+        <!-- Itinerary List -->
+        <div class='itinerary-section'>
+            <div class='section-label'>Your Route</div>
+            <div id='itinerary-list' class='itinerary-list'></div>
+        </div>
+
+        <!-- Fly Button -->
+        <div class='fly-btn-container'>
+            <button id='fly-btn' class='fly-btn' disabled>Start Trip →</button>
+        </div>
+
+        <!-- City Info / POI Content -->
+        <div id='city-info' class='city-info'></div>
+
+        <!-- Route Stats -->
+        <div id='route-info' class='route-info' style='display:none;'></div>
+    </aside>
+
+    <!-- Scripts (order matters: data → ui → main) -->
+    <script src='js/data.js'></script>
+    <script src='js/ui.js'></script>
+    <script src='js/main.js'></script>
+</body>
+</html>
