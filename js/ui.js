@@ -165,7 +165,6 @@ function renderTabs() {
   const tabs = [
     { key: 'food', icon: '🍽️', label: 'Food' },
     { key: 'landmarks', icon: '🏛️', label: 'Sights' },
-    { key: 'parks', icon: '🌳', label: 'Parks' },
     { key: 'activities', icon: '🎭', label: 'Fun' },
   ];
 

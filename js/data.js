@@ -41,12 +41,6 @@ const POI_CATEGORIES = {
     icon: '🏛️',
     cssClass: 'landmark',
   },
-  parks: {
-    apiCategories: 'leisure.park,natural,leisure.garden',
-    label: 'Parks & Nature',
-    icon: '🌳',
-    cssClass: 'park',
-  },
   activities: {
     apiCategories: 'entertainment,sport,leisure.playground,activity',
     label: 'Activities',
