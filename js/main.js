@@ -88,6 +88,9 @@ function removeCity(index) {
 document.getElementById('fly-btn').addEventListener('click', async () => {
   if (isFlying || itinerary.length === 0) return;
 
+  // Clear POI markers immediately when starting any fly action
+  clearPOIMarkers();
+
   currentIndex++;
   if (currentIndex >= itinerary.length) {
     // Loop back to start — zoom out to globe view
@@ -108,12 +111,12 @@ document.getElementById('fly-btn').addEventListener('click', async () => {
       placeCityMarkers(map, itinerary, currentIndex);
       renderRouteInfo(itinerary, currentIndex);
       renderWelcomeState();
-      clearPOIMarkers();
     });
     return;
   }
 
   const destination = itinerary[currentIndex];
+  const fromCity    = currentIndex > 0 ? itinerary[currentIndex - 1] : null;
   isFlying = true;
 
   renderItineraryList(itinerary, currentIndex);
@@ -160,7 +163,7 @@ document.getElementById('fly-btn').addEventListener('click', async () => {
 
   // Render data
   const { wikiData, pois } = await dataPromise;
-  renderCityCard(destination.name, wikiData, pois);
+  renderCityCard(destination.name, wikiData, pois, fromCity);
   placeCityMarkers(map, itinerary, currentIndex);
   placePOIMarkers(map, pois);
 });
@@ -215,4 +218,13 @@ map.on('load', () => {
   renderWelcomeState();
   renderItineraryList(itinerary, currentIndex);
   renderRouteInfo(itinerary, currentIndex);
+
+  // --- Hide POI markers when zoomed out below zoom 10 ---
+  const POI_VISIBLE_ZOOM = 10;
+  map.on('zoom', () => {
+    const z = map.getZoom();
+    poiMarkers.forEach((marker) => {
+      marker.getElement().style.display = z >= POI_VISIBLE_ZOOM ? '' : 'none';
+    });
+  });
 });

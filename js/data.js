@@ -67,7 +67,7 @@ async function fetchPOIs(lon, lat, categoryKey, limit = 8) {
   try {
     const url = new URL('https://api.geoapify.com/v2/places');
     url.searchParams.set('categories', cat.apiCategories);
-    url.searchParams.set('filter', `circle:${lon},${lat},5000`); // 5km radius
+    url.searchParams.set('filter', `circle:${lon},${lat},15000`); // 15km radius
     url.searchParams.set('bias', `proximity:${lon},${lat}`);
     url.searchParams.set('limit', limit);
     url.searchParams.set('apiKey', GEOAPIFY_KEY);

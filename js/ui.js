@@ -48,7 +48,7 @@ function renderItineraryList(itinerary, currentIndex) {
 }
 
 // ---- City Info Card ----
-function renderCityCard(cityName, wikiData, pois) {
+function renderCityCard(cityName, wikiData, pois, fromCity) {
   const container = document.getElementById('city-info');
   activePOIs = pois || {};
   activeTab = 'food';
@@ -65,8 +65,13 @@ function renderCityCard(cityName, wikiData, pois) {
     ? wikiData.description
     : '';
 
+  const transportHTML = fromCity
+    ? renderTransportPanel(fromCity.name, cityName)
+    : '';
+
   container.innerHTML = `
     <div class="city-card">
+      ${transportHTML}
       <div class="city-card-header">
         ${thumbnail}
         <div class="city-card-overlay"></div>
@@ -94,6 +99,66 @@ function renderCityCard(cityName, wikiData, pois) {
       document.getElementById('poi-content').innerHTML = renderPOIList(activeTab);
     });
   });
+}
+
+// ---- Transport Search Panel ----
+function renderTransportPanel(fromName, toName) {
+  const from = encodeURIComponent(fromName);
+  const to   = encodeURIComponent(toName);
+
+  // Google Flights deep-link (date defaults to today + 7 days)
+  const flightsUrl = `https://www.google.com/travel/flights?q=Flights+from+${from}+to+${to}`;
+
+  // Omio covers trains, buses, and flights across Europe & beyond
+  const omioUrl = `https://www.omio.com/search?origin=${from}&destination=${to}&type=train`;
+
+  // Rome2Rio gives multimodal options (flights, trains, ferries, drive)
+  const rome2rioUrl = `https://www.rome2rio.com/s/${from}/${to}`;
+
+  // Google Maps driving directions as fallback
+  const mapsUrl = `https://www.google.com/maps/dir/${from}/${to}`;
+
+  return `
+    <div class="transport-panel">
+      <div class="transport-header">
+        <span class="transport-route-label">✈ ${fromName} → ${toName}</span>
+        <span class="transport-panel-title">Search Travel Options</span>
+      </div>
+      <div class="transport-links">
+        <a class="transport-link" href="${flightsUrl}" target="_blank" rel="noopener">
+          <span class="transport-link-icon">✈️</span>
+          <div class="transport-link-info">
+            <div class="transport-link-name">Google Flights</div>
+            <div class="transport-link-desc">Live prices &amp; schedules</div>
+          </div>
+          <span class="transport-link-arrow">→</span>
+        </a>
+        <a class="transport-link" href="${omioUrl}" target="_blank" rel="noopener">
+          <span class="transport-link-icon">🚆</span>
+          <div class="transport-link-info">
+            <div class="transport-link-name">Omio</div>
+            <div class="transport-link-desc">Trains, buses &amp; flights</div>
+          </div>
+          <span class="transport-link-arrow">→</span>
+        </a>
+        <a class="transport-link" href="${rome2rioUrl}" target="_blank" rel="noopener">
+          <span class="transport-link-icon">🗺️</span>
+          <div class="transport-link-info">
+            <div class="transport-link-name">Rome2Rio</div>
+            <div class="transport-link-desc">All routes compared</div>
+          </div>
+          <span class="transport-link-arrow">→</span>
+        </a>
+        <a class="transport-link" href="${mapsUrl}" target="_blank" rel="noopener">
+          <span class="transport-link-icon">🚗</span>
+          <div class="transport-link-info">
+            <div class="transport-link-name">Google Maps</div>
+            <div class="transport-link-desc">Driving directions</div>
+          </div>
+          <span class="transport-link-arrow">→</span>
+        </a>
+      </div>
+    </div>`;
 }
 
 function renderTabs() {
